@@ -1,0 +1,361 @@
+<title>Firm — Sell secondhand without the stress</title>
+<style>
+  :root {
+    --ground:      #141E1C;
+    --ground-2:    #1B2724;
+    --raised:      #23312D;
+    --paper:       #F2ECDE;
+    --incoming:    #2C3A36;
+    --brass:       #DBA53F;
+    --brass-soft:  rgba(219,165,63,0.14);
+    --clay:        #C85C43;
+    --text:        #ECE6D8;
+    --text-dim:    rgba(236,230,216,0.62);
+    --text-faint:  rgba(236,230,216,0.4);
+    --ink:         #1B2320;
+    --line:        rgba(236,230,216,0.1);
+    --serif: Georgia, 'Iowan Old Style', 'Times New Roman', serif;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, 'SF Mono', 'Menlo', 'Consolas', monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  .page {
+    background:
+      radial-gradient(120% 80% at 80% -10%, #21302C 0%, transparent 55%),
+      var(--ground);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  .wrap { max-width: 940px; margin: 0 auto; padding: 0 24px; }
+  .narrow { max-width: 680px; }
+
+  /* ---- type ---- */
+  h1, h2, h3 { font-family: var(--serif); font-weight: 600; text-wrap: balance; line-height: 1.12; letter-spacing: -0.01em; margin: 0; }
+  .eyebrow {
+    font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--brass); margin: 0 0 18px;
+  }
+  p { margin: 0; }
+
+  /* ---- nav ---- */
+  .nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 22px 0; border-bottom: 1px solid var(--line);
+  }
+  .brand { font-family: var(--serif); font-size: 1.5rem; font-weight: 600; letter-spacing: -0.02em; }
+  .brand .dot { color: var(--brass); }
+  .nav-note { font-family: var(--mono); font-size: 0.7rem; color: var(--text-faint); letter-spacing: 0.04em; }
+
+  /* ---- hero ---- */
+  .hero { padding: 76px 0 40px; display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 54px; align-items: center; }
+  .hero h1 { font-size: clamp(2.5rem, 5.4vw, 3.9rem); }
+  .hero h1 em { font-style: italic; color: var(--brass); }
+  .hero-sub { color: var(--text-dim); font-size: 1.1rem; margin-top: 22px; max-width: 30ch; }
+
+  .cta-row { display: flex; gap: 12px; margin-top: 34px; flex-wrap: wrap; }
+  .field {
+    background: var(--ground-2); border: 1px solid var(--line); color: var(--text);
+    padding: 14px 16px; border-radius: 11px; font-size: 0.95rem; font-family: var(--sans);
+    min-width: 220px; flex: 1;
+  }
+  .field::placeholder { color: var(--text-faint); }
+  .field:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; border-color: transparent; }
+  .btn {
+    background: var(--brass); color: #201700; border: none; font-weight: 650;
+    padding: 14px 22px; border-radius: 11px; font-size: 0.95rem; cursor: pointer;
+    font-family: var(--sans); white-space: nowrap; transition: transform .12s ease, filter .12s ease;
+  }
+  .btn:hover { filter: brightness(1.06); transform: translateY(-1px); }
+  .btn:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
+  .cta-fine { font-size: 0.8rem; color: var(--text-faint); margin-top: 12px; }
+
+  /* ---- phone thread ---- */
+  .thread {
+    background: var(--ground-2); border: 1px solid var(--line); border-radius: 22px;
+    padding: 20px 18px 22px; box-shadow: 0 30px 60px -30px rgba(0,0,0,0.6);
+  }
+  .thread-top {
+    display: flex; align-items: center; gap: 10px; padding: 2px 6px 16px;
+    border-bottom: 1px solid var(--line); margin-bottom: 16px;
+  }
+  .avatar { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg,#3a4b46,#2a3833); display: grid; place-items: center; font-size: 0.9rem; }
+  .thread-top b { font-size: 0.9rem; }
+  .thread-top span { font-family: var(--mono); font-size: 0.68rem; color: var(--text-faint); display: block; }
+  .bubbles { display: flex; flex-direction: column; gap: 9px; }
+  .bubble { max-width: 82%; padding: 10px 14px; font-size: 0.9rem; line-height: 1.45; border-radius: 16px; opacity: 0; transform: translateY(8px); animation: pop .5s ease forwards; }
+  .bubble.in  { align-self: flex-start; background: var(--incoming); border-bottom-left-radius: 5px; }
+  .bubble.out { align-self: flex-end; background: var(--paper); color: var(--ink); border-bottom-right-radius: 5px; }
+  .bubble.out b { color: #7a5410; }
+  .b1 { animation-delay: .15s; } .b2 { animation-delay: .5s; } .b3 { animation-delay: .85s; }
+  .b4 { animation-delay: 1.3s; }
+  .tap { align-self: flex-end; font-family: var(--mono); font-size: 0.66rem; color: var(--brass); margin-top: 6px; opacity: 0; animation: pop .5s ease forwards; animation-delay: 1.15s; }
+  @keyframes pop { to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .bubble, .tap { animation: none; opacity: 1; transform: none; } }
+
+  /* ---- sections ---- */
+  section { padding: 66px 0; }
+  .rule { border: 0; border-top: 1px solid var(--line); margin: 0; }
+  .lead { font-size: 1.7rem; max-width: 20ch; }
+  .section-head { font-size: clamp(1.7rem, 3.5vw, 2.4rem); margin-bottom: 8px; }
+  .section-intro { color: var(--text-dim); max-width: 54ch; margin-bottom: 40px; }
+
+  /* problem quotes */
+  .quotes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .quote { background: var(--ground-2); border: 1px solid var(--line); border-radius: 14px; padding: 22px; }
+  .quote .msg { font-size: 1.02rem; color: var(--text); margin-bottom: 14px; font-family: var(--serif); font-style: italic; }
+  .quote .who { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--clay); }
+
+  /* offerings */
+  .offers { display: flex; flex-direction: column; gap: 2px; }
+  .offer { display: grid; grid-template-columns: 44px 1fr auto; gap: 20px; align-items: baseline; padding: 26px 0; border-top: 1px solid var(--line); }
+  .offer:last-child { border-bottom: 1px solid var(--line); }
+  .offer .num { font-family: var(--mono); font-size: 0.8rem; color: var(--brass); }
+  .offer h3 { font-size: 1.35rem; margin-bottom: 6px; }
+  .offer p { color: var(--text-dim); max-width: 46ch; }
+  .offer .flag { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 5px 10px; border-radius: 50px; white-space: nowrap; }
+  .flag.free { background: var(--brass-soft); color: var(--brass); }
+  .flag.star { background: rgba(200,92,67,0.16); color: #e0836d; }
+
+  /* live demo */
+  .demo { background: var(--ground-2); border: 1px solid var(--line); border-radius: 20px; padding: 8px; }
+  .tabs { display: flex; gap: 4px; padding: 8px; flex-wrap: wrap; }
+  .tab { background: transparent; border: 1px solid transparent; color: var(--text-dim); font-family: var(--mono); font-size: 0.74rem; letter-spacing: 0.04em; text-transform: uppercase; padding: 9px 15px; border-radius: 50px; cursor: pointer; transition: all .15s; }
+  .tab:hover { color: var(--text); }
+  .tab[aria-selected="true"] { background: var(--brass); color: #201700; }
+  .tab:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
+  .demo-body { padding: 12px 18px 20px; }
+  .demo-in { color: var(--text-dim); font-size: 0.92rem; margin-bottom: 16px; }
+  .demo-in span { font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--clay); display: block; margin-bottom: 6px; }
+  .demo-out { background: var(--paper); color: var(--ink); border-radius: 14px; padding: 18px 20px; font-size: 1rem; line-height: 1.55; }
+  .demo-out span { font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.1em; text-transform: uppercase; color: #7a5410; display: block; margin-bottom: 8px; }
+
+  /* pricing */
+  .prices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .price { background: var(--ground-2); border: 1px solid var(--line); border-radius: 16px; padding: 28px 24px; display: flex; flex-direction: column; }
+  .price.feat { border-color: var(--brass); background: linear-gradient(180deg, var(--brass-soft), var(--ground-2) 60%); }
+  .price .plan { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dim); }
+  .price .amt { font-family: var(--serif); font-size: 2.6rem; margin: 12px 0 2px; font-variant-numeric: tabular-nums; }
+  .price .amt small { font-size: 0.9rem; color: var(--text-dim); font-family: var(--sans); }
+  .price .per { color: var(--text-dim); font-size: 0.88rem; margin-bottom: 16px; }
+  .price ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 9px; font-size: 0.9rem; color: var(--text-dim); }
+  .price li::before { content: "→ "; color: var(--brass); }
+  .save { font-family: var(--mono); font-size: 0.66rem; color: var(--clay); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 4px; }
+
+  /* closing cta */
+  .close { text-align: center; padding: 88px 0; }
+  .close h2 { font-size: clamp(2rem, 4.6vw, 3rem); margin-bottom: 18px; }
+  .close p { color: var(--text-dim); max-width: 44ch; margin: 0 auto 30px; }
+  .close .cta-row { justify-content: center; }
+  .thanks { display: none; font-family: var(--serif); font-style: italic; font-size: 1.3rem; color: var(--brass); }
+  .thanks.show { display: block; }
+  form.hide { display: none; }
+
+  footer { border-top: 1px solid var(--line); padding: 26px 0 40px; }
+  footer p { font-family: var(--mono); font-size: 0.7rem; color: var(--text-faint); letter-spacing: 0.03em; }
+
+  @media (max-width: 760px) {
+    .hero { grid-template-columns: 1fr; gap: 40px; padding-top: 48px; }
+    .quotes, .prices { grid-template-columns: 1fr; }
+    .offer { grid-template-columns: 32px 1fr; }
+    .offer .flag { grid-column: 2; justify-self: start; margin-top: 4px; }
+  }
+</style>
+
+<div class="page">
+  <div class="wrap">
+    <nav class="nav">
+      <div class="brand">Firm<span class="dot">.</span></div>
+      <div class="nav-note">early access · 2026</div>
+    </nav>
+
+    <header class="hero">
+      <div>
+        <p class="eyebrow">For Facebook Marketplace &amp; OfferUp sellers</p>
+        <h1>Sell your stuff. <em>Skip</em> the lowballers, ghosts, and scammers.</h1>
+        <p class="hero-sub">Firm prices your item, writes a listing that sells, and hands you the exact reply to shut down every hassle — polite, but final.</p>
+        <form class="cta-row" id="hero-form">
+          <input class="field" type="email" name="email" placeholder="you@email.com" aria-label="Email" required />
+          <input type="hidden" name="source" value="hero" />
+          <button class="btn" type="submit">Get early access</button>
+        </form>
+        <p class="cta-fine">No spam. Just a note when it's live. First 500 get the 10-pack free.</p>
+      </div>
+
+      <div class="thread" aria-label="Example message thread">
+        <div class="thread-top">
+          <div class="avatar">🙃</div>
+          <div><b>Marketplace Buyer</b><span>active now</span></div>
+        </div>
+        <div class="bubbles">
+          <div class="bubble in b1">is this still available??</div>
+          <div class="bubble in b2">will u take $20 for it lol</div>
+          <div class="bubble in b3">my guy will pick up, I'll send extra on Zelle 🙏</div>
+          <div class="bubble out b4">Yes, it's available — first to confirm a pickup time gets it. I'm <b>firm at $120</b>, cash on pickup. No shipping or third-party couriers. Let me know a time that works!</div>
+          <div class="tap">↑ generated in one tap</div>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <hr class="rule" />
+
+  <section class="wrap">
+    <p class="eyebrow">The part nobody warns you about</p>
+    <h2 class="lead">Listing takes five minutes. The messages take all week.</h2>
+    <div class="quotes" style="margin-top:40px">
+      <div class="quote">
+        <p class="msg">"Best price? Best price? Best price?" — then never shows up.</p>
+        <p class="who">The Ghost</p>
+      </div>
+      <div class="quote">
+        <p class="msg">"$300 is too much. I'll give you $80 and I'm doing you a favor."</p>
+        <p class="who">The Lowballer</p>
+      </div>
+      <div class="quote">
+        <p class="msg">"I'll overpay via Zelle, just send the difference to my mover."</p>
+        <p class="who">The Scammer</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <h2 class="section-head">Three things, one tap</h2>
+    <p class="section-intro">Upload a photo. Firm does the pricing, the writing, and — the part that actually saves your sanity — the pushback.</p>
+    <div class="offers">
+      <div class="offer">
+        <span class="num">01</span>
+        <div><h3>A fair price, fast</h3><p>Based on recent comparable sales, not guesswork. Get a fast-sale, suggested, and top price in seconds.</p></div>
+        <span class="flag free">3 free / month</span>
+      </div>
+      <div class="offer">
+        <span class="num">02</span>
+        <div><h3>A listing that sells</h3><p>Three AI-written descriptions tuned for search and scannability — pick the one that fits and post.</p></div>
+        <span class="flag">premium</span>
+      </div>
+      <div class="offer">
+        <span class="num">03</span>
+        <div><h3>Comebacks that end it</h3><p>Copy-paste replies for lowballs, ghosts, hold requests, and scams. Firm and polite, so you never have to draft the awkward "no" again.</p></div>
+        <span class="flag star">the reason you'll pay</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap narrow">
+    <h2 class="section-head">See it handle the hard ones</h2>
+    <p class="section-intro">Real situations, real replies. Pick a headache:</p>
+    <div class="demo">
+      <div class="tabs" role="tablist">
+        <button class="tab" role="tab" aria-selected="true" data-k="low">Lowball</button>
+        <button class="tab" role="tab" aria-selected="false" data-k="ghost">Ghost</button>
+        <button class="tab" role="tab" aria-selected="false" data-k="scam">Scam</button>
+        <button class="tab" role="tab" aria-selected="false" data-k="hold">Hold request</button>
+      </div>
+      <div class="demo-body">
+        <p class="demo-in"><span>They said</span><em id="d-in">"Will you take $60?" (on a $200 item)</em></p>
+        <div class="demo-out"><span>Your reply</span><span id="d-out" style="font:inherit;color:var(--ink);letter-spacing:0;text-transform:none;display:block;margin:0">Thanks for the offer! I'm firm at $200 — it's already priced below what these sell for. If that works, happy to hold it until you can pick up.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <h2 class="section-head">Pay when you need it</h2>
+    <p class="section-intro">No subscription trap. Free to try every month; pay per item, or stock up.</p>
+    <div class="prices">
+      <div class="price">
+        <span class="plan">Free</span>
+        <div class="amt">$0</div>
+        <p class="per">every month</p>
+        <ul><li>3 price checks</li><li>Basic listing text</li><li>No card needed</li></ul>
+      </div>
+      <div class="price">
+        <span class="plan">Per item</span>
+        <div class="amt">$2.99</div>
+        <p class="per">one full package</p>
+        <ul><li>Price + 3 listings</li><li>Full defense pack</li><li>Pay only when selling</li></ul>
+      </div>
+      <div class="price feat">
+        <span class="plan">10-pack</span>
+        <div class="amt">$14.99</div>
+        <p class="save">save 50%</p>
+        <ul><li>10 full packages</li><li>Never expires</li><li>Best for a big clear-out</li></ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="close wrap narrow">
+    <h2>Would you use this?</h2>
+    <p>That's the only question that matters right now. Drop your email — it tells us whether to build it.</p>
+    <form class="cta-row" id="close-form">
+      <input class="field" type="email" name="email" placeholder="you@email.com" aria-label="Email" required />
+      <input type="hidden" name="source" value="closing" />
+      <button class="btn" type="submit">Count me in</button>
+    </form>
+    <p class="thanks" id="thanks">You're on the list. We'll be in touch. ✋</p>
+  </section>
+
+  <footer class="wrap">
+    <p>Firm — an early concept. Prices shown are illustrative. Nothing is charged yet.</p>
+  </footer>
+</div>
+
+<script>
+  var replies = {
+    low:   { in: '"Will you take $60?" (on a $200 item)', out: "Thanks for the offer! I'm firm at $200 — it's already priced below what these sell for. If that works, happy to hold it until you can pick up." },
+    ghost: { in: '"Is this still available??" ...then silence.', out: "Yes, it's available! I go first-come, first-served — whoever confirms a pickup time first gets it. When are you free to come by?" },
+    scam:  { in: '"I\'ll send extra on Zelle, my courier will grab it."', out: "I only accept cash in person at pickup — no shipping, no third-party couriers, no advance payments. If that doesn't work, no problem, but I can't make an exception." },
+    hold:  { in: '"Can you hold it for two weeks for me?"', out: "Happy to hold it — I keep items on hold for 24 hours with a small non-refundable deposit. Without one I have to keep it listed for other buyers. Which works for you?" }
+  };
+  var tabs = document.querySelectorAll('.tab');
+  var dIn = document.getElementById('d-in'), dOut = document.getElementById('d-out');
+  tabs.forEach(function (t) {
+    t.addEventListener('click', function () {
+      tabs.forEach(function (x) { x.setAttribute('aria-selected', 'false'); });
+      t.setAttribute('aria-selected', 'true');
+      var r = replies[t.dataset.k];
+      dIn.textContent = r.in; dOut.textContent = r.out;
+    });
+  });
+
+  // 1) Formspree에서 발급받은 엔드포인트로 교체하세요 (https://formspree.io/f/xxxxxxx)
+  var FORMSPREE_ENDPOINT = 'https://formspree.io/f/mdarpvpl';
+
+  function showSuccess(formId, form) {
+    var thanks = document.getElementById('thanks');
+    if (formId === 'close-form' && thanks) { form.classList.add('hide'); thanks.classList.add('show'); }
+    else { form.querySelector('.btn').textContent = "You're in ✓"; }
+  }
+
+  function wire(formId) {
+    var f = document.getElementById(formId);
+    if (!f) return;
+    f.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var btn = f.querySelector('.btn');
+      var original = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = 'Sending…';
+
+      fetch(FORMSPREE_ENDPOINT, {
+        method: 'POST',
+        body: new FormData(f),
+        headers: { 'Accept': 'application/json' }
+      })
+        .then(function (res) {
+          if (res.ok) { showSuccess(formId, f); }
+          else { throw new Error('submit failed'); }
+        })
+        .catch(function () {
+          btn.disabled = false;
+          btn.textContent = original;
+          alert("Something went wrong — please try again, or email us directly.");
+        });
+    });
+  }
+  wire('hero-form'); wire('close-form');
+</script>
